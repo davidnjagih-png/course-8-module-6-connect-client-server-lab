@@ -1,10 +1,20 @@
 from flask import Flask, jsonify, request
-from flask_cors import CORS
-
-from data import events
 
 app = Flask(__name__)
-CORS(app)
+
+# Enable CORS so client/index.html (opened as a file) can call the API.
+# Wrapped in try/except so the server still runs where flask_cors isn't installed.
+try:
+    from flask_cors import CORS
+    CORS(app)
+except ImportError:
+    pass
+
+# In-memory event store
+events = [
+    {"id": 1, "title": "Tech Meetup"},
+    {"id": 2, "title": "Python Workshop"},
+]
 
 
 # ---------- Helpers ----------
